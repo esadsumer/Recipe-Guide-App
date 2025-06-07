@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" xmlns:fx="http://javafx.com/fxml" fx:controller="com.recipeguide.controller.MainController">
+    <MenuBar>
+        <Menu text="Tarif İşlemleri">
+            <MenuItem text="Tarif Ekle" onAction="#handleAddRecipe"/>
+            <MenuItem text="Tarif Güncelle" onAction="#handleUpdateRecipe"/>
+            <MenuItem text="Tarif Sil" onAction="#handleDeleteRecipe"/>
+        </Menu>
+    </MenuBar>
+    <!-- Tarif Ekleme/Güncelleme Alanı -->
+    <TitledPane text="Tarif Ekle/Güncelle" expanded="false">
+        <VBox spacing="5">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <HBox spacing="10">
+                <TextField fx:id="nameField" promptText="Tarif Adı"/>
+                <ComboBox fx:id="categoryComboBox" promptText="Kategori"/>
+                <TextField fx:id="prepTimeField" promptText="Hazırlama Süresi (dk)"/>
+            </HBox>
+            <TextArea fx:id="instructionsArea" promptText="Hazırlanışı" prefRowCount="2"/>
+            <HBox spacing="10">
+                <ComboBox fx:id="existingIngredientsComboBox" promptText="Mevcut Malzemeler" prefWidth="150"/>
+                <TextField fx:id="ingredientNameField" promptText="Yeni Malzeme Adı" prefWidth="150"/>
+                <TextField fx:id="ingredientAmountField" promptText="Miktar" prefWidth="100"/>
+                <ComboBox fx:id="ingredientUnitComboBox" promptText="Birim" prefWidth="120"/>
+                <TextField fx:id="ingredientPriceField" promptText="Fiyat (opsiyonel)" prefWidth="120"/>
+                <Button text="Malzeme Ekle" onAction="#handleAddIngredient"/>
+                <Button text="Yeni Malzeme Kaydet" onAction="#handleAddNewIngredient"/>
+                <Button text="Malzeme Sil" onAction="#handleDeleteIngredient"/>
+            </HBox>
+            <ListView fx:id="ingredientsList" prefHeight="60"/>
+            <Button text="Tarifi Kaydet" onAction="#handleSaveRecipe"/>
+        </VBox>
+    </TitledPane>
+    <HBox spacing="10">
+        <TextField fx:id="searchField" promptText="Tarif Ara..." maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="filterCategoryComboBox" promptText="Kategori Filtrele" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <Button text="Ara" onAction="#handleSearch"/>
+    </HBox>
+    <SplitPane>
+        <VBox spacing="5">
+            <Label text="Tarifler"/>
+            <TableView fx:id="recipeTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Tarif Adı" prefWidth="200"/>
+                    <TableColumn fx:id="categoryColumn" text="Kategori" prefWidth="100"/>
+                    <TableColumn fx:id="prepTimeColumn" text="Hazırlama Süresi" prefWidth="150"/>
+                    <TableColumn fx:id="instructionsColumn" text="Hazırlanışı" prefWidth="250"/>
+                    <TableColumn fx:id="ingredientsColumn" text="Malzemeler" prefWidth="250"/>
+                </columns>
+            </TableView>
+        </VBox>
+        <VBox spacing="5">
+            <Label text="Tarif Detayları"/>
+            <TextArea fx:id="recipeDetailArea" VBox.vgrow="ALWAYS" editable="false"/>
+        </VBox>
+    </SplitPane>
+</VBox> 

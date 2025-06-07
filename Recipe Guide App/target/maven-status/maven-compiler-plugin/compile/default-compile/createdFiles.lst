@@ -1,0 +1,8 @@
+com\recipeguide\controller\MainController.class
+com\recipeguide\controller\MainController$1.class
+com\recipeguide\database\RecipeDatabaseService.class
+com\recipeguide\model\Recipe.class
+com\recipeguide\model\Recipe$RecipeIngredient.class
+com\recipeguide\Main.class
+com\recipeguide\db\DatabaseManager.class
+com\recipeguide\database\DatabaseConfig.class

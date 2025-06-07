@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<VBox spacing="15" xmlns:fx="http://javafx.com/fxml" fx:controller="com.recipeguide.controller.MainController" stylesheets="@../styles/main.css">
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15"/>
+    </padding>
+
+    <!-- Menu Bar -->
+    <MenuBar>
+        <Menu text="Dosya">
+            <MenuItem text="Yeni Tarif" onAction="#handleAddRecipe"/>
+            <MenuItem text="Kaydet" onAction="#handleSaveRecipe"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="Cikis" onAction="#handleExit"/>
+        </Menu>
+        <Menu text="Duzenle">
+            <MenuItem text="Tarif Guncelle" onAction="#handleUpdateRecipe"/>
+            <MenuItem text="Tarif Sil" onAction="#handleDeleteRecipe"/>
+        </Menu>
+        <Menu text="Yardim">
+            <MenuItem text="Hakkinda" onAction="#handleAbout"/>
+        </Menu>
+    </MenuBar>
+
+    <!-- Search Section -->
+    <TitledPane text="Tarif Arama" expanded="true">
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField" promptText="Tarif Ara..." HBox.hgrow="ALWAYS">
+                    <tooltip>
+                        <Tooltip text="Tarif adi veya iceriginde gecen kelimeleri yazin"/>
+                    </tooltip>
+                </TextField>
+                <ComboBox fx:id="filterCategoryComboBox" promptText="Kategori Secin">
+                    <tooltip>
+                        <Tooltip text="Tarifleri kategoriye gore filtreleyin"/>
+                    </tooltip>
+                </ComboBox>
+                <Button text="Ara" onAction="#handleSearch">
+                    <tooltip>
+                        <Tooltip text="Arama yapmak icin tiklayin"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+
+            <!-- Ingredient Search Section -->
+            <HBox spacing="15">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Mevcut Malzemeler" style="-fx-font-weight: bold;"/>
+                    <ListView fx:id="availableIngredientsList" VBox.vgrow="ALWAYS">
+                        <tooltip>
+                            <Tooltip text="Arama icin kullanmak istediginiz malzemeleri secin"/>
+                        </tooltip>
+                    </ListView>
+                </VBox>
+                
+                <VBox spacing="10" alignment="CENTER">
+                    <Button text="&gt;&gt;" onAction="#handleAddIngredientToSearch">
+                        <tooltip>
+                            <Tooltip text="Malzeme ekle"/>
+                        </tooltip>
+                    </Button>
+                    <Button text="&lt;&lt;" onAction="#handleRemoveIngredientFromSearch">
+                        <tooltip>
+                            <Tooltip text="Malzeme cikar"/>
+                        </tooltip>
+                    </Button>
+                </VBox>
+                
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                    <Label text="Secili Malzemeler" style="-fx-font-weight: bold;"/>
+                    <ListView fx:id="selectedIngredientsList" VBox.vgrow="ALWAYS">
+                        <tooltip>
+                            <Tooltip text="Arama icin secilen malzemeler"/>
+                        </tooltip>
+                    </ListView>
+                </VBox>
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Main Content Area -->
+    <SplitPane VBox.vgrow="ALWAYS">
+        <!-- Recipe Table Section -->
+        <VBox spacing="10">
+            <Label text="Tarifler" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <TableView fx:id="recipeTable" VBox.vgrow="ALWAYS" onMouseClicked="#handleShowRecipeDetails">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Tarif Adi" prefWidth="150"/>
+                    <TableColumn fx:id="categoryColumn" text="Kategori" prefWidth="100"/>
+                    <TableColumn fx:id="prepTimeColumn" text="Hazirlama Suresi" prefWidth="120"/>
+                    <TableColumn fx:id="instructionsColumn" text="Talimatlar" prefWidth="200"/>
+                    <TableColumn fx:id="matchPercentageColumn" text="Eslesme %" prefWidth="100"/>
+                    <TableColumn fx:id="ingredientsColumn" text="Malzemeler" prefWidth="200"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- Recipe Details Section -->
+        <VBox spacing="10">
+            <Label text="Tarif Detaylari" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <TextArea fx:id="recipeDetailArea" VBox.vgrow="ALWAYS" editable="false" wrapText="true"/>
+        </VBox>
+    </SplitPane>
+
+    <!-- Recipe and Ingredient Forms -->
+    <TitledPane text="Tarif ve Malzeme Islemleri" expanded="false">
+        <HBox spacing="20">
+            <!-- Recipe Form Panel -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Tarif Adi:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <tooltip>
+                            <Tooltip text="Tarifin adini girin"/>
+                        </tooltip>
+                    </TextField>
+                    
+                    <Label text="Kategori:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="categoryComboBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <tooltip>
+                            <Tooltip text="Tarifin kategorisini secin"/>
+                        </tooltip>
+                    </ComboBox>
+                    
+                    <Label text="Hazirlama Suresi:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="prepTimeField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <tooltip>
+                            <Tooltip text="Dakika cinsinden hazirlama suresini girin"/>
+                        </tooltip>
+                    </TextField>
+                    
+                    <Label text="Tarif:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextArea fx:id="instructionsArea" GridPane.columnIndex="1" GridPane.rowIndex="3" prefRowCount="3">
+                        <tooltip>
+                            <Tooltip text="Tarifin hazirlanis adimlarini girin"/>
+                        </tooltip>
+                    </TextArea>
+                </GridPane>
+            </VBox>
+
+            <!-- Ingredient Form Panel -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Mevcut Malzeme:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <ComboBox fx:id="existingIngredientsComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <tooltip>
+                            <Tooltip text="Mevcut malzemelerden secin"/>
+                        </tooltip>
+                    </ComboBox>
+                    
+                    <Label text="Yeni Malzeme Adi:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="newIngredientNameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <tooltip>
+                            <Tooltip text="Yeni malzeme adini girin"/>
+                        </tooltip>
+                    </TextField>
+                    
+                    <Label text="Miktar:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="ingredientAmountField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <tooltip>
+                            <Tooltip text="Malzeme miktarini girin"/>
+                        </tooltip>
+                    </TextField>
+                    
+                    <Label text="Birim:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <ComboBox fx:id="ingredientUnitComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <tooltip>
+                            <Tooltip text="Malzeme birimini secin"/>
+                        </tooltip>
+                    </ComboBox>
+                </GridPane>
+                
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="Malzeme Ekle" onAction="#handleAddIngredient">
+                        <tooltip>
+                            <Tooltip text="Secili malzemeyi ekle"/>
+                        </tooltip>
+                    </Button>
+                    <Button text="Yeni Malzeme Ekle" onAction="#handleAddNewIngredient">
+                        <tooltip>
+                            <Tooltip text="Yeni malzeme olustur"/>
+                        </tooltip>
+                    </Button>
+                </HBox>
+            </VBox>
+        </HBox>
+    </TitledPane>
+
+    <!-- Action Buttons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Yeni Tarif" onAction="#handleAddRecipe">
+            <tooltip>
+                <Tooltip text="Yeni tarif olustur"/>
+            </tooltip>
+        </Button>
+        <Button text="Tarifi Guncelle" onAction="#handleUpdateRecipe">
+            <tooltip>
+                <Tooltip text="Secili tarifi guncelle"/>
+            </tooltip>
+        </Button>
+        <Button text="Tarifi Sil" onAction="#handleDeleteRecipe">
+            <tooltip>
+                <Tooltip text="Secili tarifi sil"/>
+            </tooltip>
+        </Button>
+        <Button text="Kaydet" onAction="#handleSaveRecipe">
+            <tooltip>
+                <Tooltip text="Degisiklikleri kaydet"/>
+            </tooltip>
+        </Button>
+    </HBox>
+</VBox> 
